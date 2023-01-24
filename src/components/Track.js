@@ -24,7 +24,6 @@ function Track() {
   const [playing, setPlaying] = useState(true);
   const [swing, setSwing] = useState(0);
   const [showVelocityForChannel, setShowVelocityForChannel] = useState(-1);
-
   var hihat = new Howl({
     src: [hihatSample],
   });
