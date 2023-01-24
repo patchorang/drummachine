@@ -45,14 +45,19 @@ function Track() {
       setSwing(swing * -1);
       const beat = (activeBeat + 1) % numBeats;
       if (hiHatTrack[beat].on) {
+        console.log("should play hat");
         hihat.volume(hiHatTrack[beat].velocity);
         hihat.play();
       }
       if (snareTrack[beat].on) {
+        console.log("should play snare");
+
         snare.volume(snareTrack[beat].velocity);
         snare.play();
       }
       if (kickTrack[beat].on) {
+        console.log("should play kick");
+
         kick.volume(kickTrack[beat].velocity);
         kick.play();
       }
