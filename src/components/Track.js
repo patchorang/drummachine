@@ -1,11 +1,12 @@
 import { Howl } from "howler";
+import { IoAddSharp } from "react-icons/io5";
 
 import { useEffect, useState } from "react";
 import { useSetInterval } from "../hooks/useSetInterval";
 
 import { useSelector, useDispatch } from "react-redux";
 import { setActiveBeatIndex } from "../store/slices/controllerSlice";
-import { setBpm } from "../store/slices/beatSlice";
+import { setBpm, addChannel } from "../store/slices/beatSlice";
 
 import sampleLibrary from "../utils/samplesLibrary";
 import Channel from "./Channel";
@@ -52,10 +53,10 @@ function Track() {
   const handleStep = () => {
     if (playing) {
       const beat = (activeBeatIndex + 1) % numBeats;
-      channels.forEach((channel) => {
+      channels.forEach((channel, channelIndex) => {
         if (channel.data[beat].on) {
-          instruments[channel.instrument].volume(channel.data[beat].velocity);
-          instruments[channel.instrument].play();
+          instruments[channelIndex].volume(channel.data[beat].velocity);
+          instruments[channelIndex].play();
         }
       });
       dispatch(setActiveBeatIndex((activeBeatIndex + 1) % numBeats));
@@ -70,7 +71,8 @@ function Track() {
 
   const renderedChannels = channels.map((channel, i) => (
     <Channel
-      key={i + channel.instrument}
+      key={i + channel.instrument.toString()}
+      instrument={channel.instrument}
       channelData={channel.data}
       channelIndex={i}
       label={sampleLibrary[channel.instrument].label}
@@ -80,17 +82,26 @@ function Track() {
   return (
     <div className="flex flex-col items-center">
       <div className="mt-4">
-        <div className="flex space-x-24 mb-4 ml-16">
+        <div className="flex justify-between mb-4 ">
           <Controls />
-          <input
-            className="border-black border-2 text-black font-bold py-1 px-3 rounded text-sm w-24"
-            type="number"
-            value={bpm}
-            onChange={handleChangeBpm}
-          />
+          <div className="flex space-x-1 items-center">
+            <input
+              className="border-black border-2 text-black font-bold py-1 pl-1 rounded text-sm w-16"
+              type="number"
+              value={bpm}
+              onChange={handleChangeBpm}
+            />
+            <div className="font-bold text-sm">bpm</div>
+          </div>
           <BeatSelector />
         </div>
         <div>{renderedChannels}</div>
+        <button
+          className="border-black border-2 text-black font-bold rounded w-8 h-8"
+          onClick={() => dispatch(addChannel({ beatIndex: selectedBeat }))}
+        >
+          <IoAddSharp className="mx-auto" size={16} />
+        </button>
       </div>
     </div>
   );

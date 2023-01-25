@@ -1,16 +1,19 @@
-import kickSample from "../clips/kick.wav";
-import snareSample from "../clips/snare.wav";
-import hiHatSample from "../clips/hihat.wav";
+import kick from "../clips/kick.wav";
+import snare from "../clips/snare.wav";
+import hiHat from "../clips/hihat.wav";
+import clap from "../clips/clap.wav";
+import openHat from "../clips/openhat.wav";
+import ride from "../clips/ride.wav";
+import rim from "../clips/rim.wav";
 
-const HIHAT = 0;
-const SNARE = 1;
-const KICK = 2;
+const sampleLibrary = [
+  { sample: ride, label: "Ride" },
+  { sample: hiHat, label: "Hi-hat" },
+  { sample: openHat, label: "Open-hat" },
+  { sample: snare, label: "Snare" },
+  { sample: clap, label: "Clap" },
+  { sample: rim, label: "Rim" },
+  { sample: kick, label: "Kick" },
+];
 
-const sampleLibrary = {
-  [KICK]: { sample: kickSample, label: "Kick" },
-  [SNARE]: { sample: snareSample, label: "Snare" },
-  [HIHAT]: { sample: hiHatSample, label: "HiHat" },
-};
-
-export { HIHAT, SNARE, KICK };
 export default sampleLibrary;

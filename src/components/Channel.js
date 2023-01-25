@@ -1,10 +1,17 @@
 import Beat from "./Beat";
+import { IoClose, IoVolumeMediumOutline } from "react-icons/io5";
+import sampleLibrary from "../utils/samplesLibrary";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleBeat, setVelocity } from "../store/slices/beatSlice";
+import {
+  toggleBeat,
+  setVelocity,
+  setInstrument,
+  removeChannel,
+} from "../store/slices/beatSlice";
 import { useState } from "react";
 var classnames = require("classnames");
 
-function Channel({ channelData, channelIndex, label }) {
+function Channel({ instrument, channelData, channelIndex }) {
   const activeBeatIndex = useSelector(
     (state) => state.controller.activeBeatIndex
   );
@@ -34,6 +41,25 @@ function Channel({ channelData, channelIndex, label }) {
     );
   };
 
+  const handleChangeInstrument = (instrument) => {
+    dispatch(
+      setInstrument({
+        beatIndex: currentBeat,
+        channelIndex: channelIndex,
+        instrument: instrument,
+      })
+    );
+  };
+
+  const handleRemoveChannel = () => {
+    dispatch(
+      removeChannel({
+        beatIndex: currentBeat,
+        channelIndex: channelIndex,
+      })
+    );
+  };
+
   const renderedChannel = channelData.map((c, i) => (
     <Beat
       key={channelData.toString() + i}
@@ -49,20 +75,50 @@ function Channel({ channelData, channelIndex, label }) {
   ));
   const classes = classnames("flex mb-1 group");
 
+  const instrumentSelectorOptions = sampleLibrary.map((instrument, index) => {
+    return (
+      <option key={index} value={index}>
+        {instrument.label}
+      </option>
+    );
+  });
+
+  const renderedInstrumentselector = (
+    <select
+      name="instrument"
+      value={instrument}
+      onChange={(e) => handleChangeInstrument(e.target.value)}
+      className="border-black border-2 text-black font-bold h-8 rounded text-sm w-24"
+    >
+      {instrumentSelectorOptions}
+    </select>
+  );
+
   return (
     <div className={classes}>
-      <div className="flex flex-col items-end pr-1">
-        <div className="w-16 text-right text-xs font-bold">{label}</div>
+      <div className="flex flex-row items-start pr-1 space-x-1 mr-4">
+        {renderedInstrumentselector}
+
         <button
-          className="text-xs"
+          className="border-black border-2 text-black font-bold rounded text-sm w-8  h-8 "
           onClick={() => setShowVelocity(!showVelocity)}
         >
-          <div className="hidden group-hover:block">
-            {showVelocity ? "hide" : "volume"}
+          <div>
+            {showVelocity ? (
+              "hide"
+            ) : (
+              <IoVolumeMediumOutline className="mx-auto" size={16} />
+            )}
           </div>
         </button>
       </div>
       {renderedChannel}
+      <button
+        onClick={handleRemoveChannel}
+        className="border-black border-2 text-black font-bold rounded w-8 h-8 ml-4"
+      >
+        <IoClose className="mx-auto" size={16} />
+      </button>
     </div>
   );
 }

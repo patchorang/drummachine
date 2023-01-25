@@ -1,12 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { HIHAT, SNARE, KICK } from "../../utils/samplesLibrary";
 
 const initialState = [
   {
     bpm: 120,
     beat: [
       {
-        instrument: HIHAT,
+        instrument: 1,
         data: [
           { on: true, velocity: 1.0 },
           { on: false, velocity: 1.0 },
@@ -27,7 +26,7 @@ const initialState = [
         ],
       },
       {
-        instrument: SNARE,
+        instrument: 3,
         data: [
           { on: false, velocity: 1.0 },
           { on: false, velocity: 1.0 },
@@ -48,7 +47,7 @@ const initialState = [
         ],
       },
       {
-        instrument: KICK,
+        instrument: 6,
         data: [
           { on: true, velocity: 1.0 },
           { on: false, velocity: 1.0 },
@@ -72,6 +71,28 @@ const initialState = [
   },
 ];
 
+const defaultChannel = {
+  instrument: 3,
+  data: [
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+    { on: false, velocity: 1.0 },
+  ],
+};
+
 export const beatSlice = createSlice({
   name: "beat",
   initialState,
@@ -93,8 +114,29 @@ export const beatSlice = createSlice({
       const beat = action.payload.beatIndex;
       state[beat].bpm = action.payload.bpm;
     },
+    setInstrument: (state, action) => {
+      const beat = action.payload.beatIndex;
+      const channel = action.payload.channelIndex;
+      state[beat].beat[channel].instrument = action.payload.instrument;
+    },
+    addChannel: (state, action) => {
+      const beat = action.payload.beatIndex;
+      state[beat].beat.push(defaultChannel);
+    },
+    removeChannel: (state, action) => {
+      const beat = action.payload.beatIndex;
+      const channel = action.payload.channelIndex;
+      state[beat].beat.splice(channel, 1);
+    },
   },
 });
 
-export const { toggleBeat, setVelocity, setBpm } = beatSlice.actions;
+export const {
+  toggleBeat,
+  setVelocity,
+  setBpm,
+  setInstrument,
+  addChannel,
+  removeChannel,
+} = beatSlice.actions;
 export default beatSlice.reducer;
