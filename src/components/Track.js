@@ -102,6 +102,9 @@ function Track() {
         >
           <IoAddSharp className="mx-auto" size={16} />
         </button>
+        <button onClick={() => console.log(JSON.stringify(beatData))}>
+          print
+        </button>
       </div>
     </div>
   );

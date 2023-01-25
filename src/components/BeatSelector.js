@@ -21,7 +21,7 @@ function BeatSelector() {
 
   return (
     <div className="flex space-x-1 items-center">
-      <div className="font-bold text-sm">Track {selectedBeat}</div>
+      <div className="font-bold text-sm">Track {selectedBeat + 1}</div>
       <Button onClick={handleDecrement}>Prev</Button>
       <Button onClick={handleIncrement}>Next</Button>
     </div>
