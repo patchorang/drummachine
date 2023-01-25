@@ -27,28 +27,8 @@ function Track() {
   const numBeats = numBars * beatsPerBar * baseNote;
 
   const [channels, setChannels] = useState(beatData.beat.map((b) => b));
-  const [instruments, setInstruments] = useState(
-    beatData.beat.map((b) => {
-      return new Howl({
-        src: [sampleLibrary[b.instrument].sample],
-      });
-    })
-  );
-
-  const setupChannelsAndInstruments = () => {
-    setChannels(beatData.beat.map((b) => b));
-    setInstruments(
-      beatData.beat.map((b) => {
-        return new Howl({
-          src: [sampleLibrary[b.instrument].sample],
-        });
-      })
-    );
-  };
-
-  useEffect(() => {
-    setupChannelsAndInstruments();
-  }, [selectedBeat, beatData]);
+  // CPU usage goes THROUGH THE ROOF if I setup the default state here. Work useEffect though.
+  const [instruments, setInstruments] = useState(null);
 
   const handleStep = () => {
     if (playing) {
@@ -65,6 +45,17 @@ function Track() {
 
   useSetInterval(handleStep, 60000 / (bpm * baseNote));
 
+  useEffect(() => {
+    setChannels(beatData.beat.map((b) => b));
+    setInstruments(
+      beatData.beat.map((b) => {
+        return new Howl({
+          src: [sampleLibrary[b.instrument].sample],
+        });
+      })
+    );
+  }, [selectedBeat, beatData]);
+
   const handleChangeBpm = (e) => {
     dispatch(setBpm({ beatIndex: selectedBeat, bpm: e.target.value }));
   };
@@ -75,7 +66,7 @@ function Track() {
       instrument={channel.instrument}
       channelData={channel.data}
       channelIndex={i}
-      label={sampleLibrary[channel.instrument].label}
+      activeBeatIndex={activeBeatIndex}
     />
   ));
 

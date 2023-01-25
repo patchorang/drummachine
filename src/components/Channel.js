@@ -1,6 +1,7 @@
 import Beat from "./Beat";
 import { IoClose, IoVolumeMediumOutline } from "react-icons/io5";
 import sampleLibrary from "../utils/samplesLibrary";
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   toggleBeat,
@@ -8,7 +9,6 @@ import {
   setInstrument,
   removeChannel,
 } from "../store/slices/beatSlice";
-import { useState } from "react";
 var classnames = require("classnames");
 
 function Channel({ instrument, channelData, channelIndex }) {
