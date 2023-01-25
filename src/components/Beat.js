@@ -1,10 +1,8 @@
-import { useState } from "react";
 import Velocity from "./Velocity";
 var classnames = require("classnames");
 
 function Beat({
   isOn,
-  index,
   velocity,
   isActive,
   highlight,
@@ -12,15 +10,10 @@ function Beat({
   showVelocity,
   onVelocityChange,
 }) {
-  const toggle = () => {
-    handleToggle();
-  };
-
-  // TODO: FIGURE OUT HOW TO SET COLOR BASED ON VELOCITY
   let colorDepth = Math.round(((Math.round(velocity * 10) / 10) * 10) / 2);
+
   const indigoColorVariants = [
     "bg-indigo-100",
-
     "bg-indigo-200",
     "bg-indigo-300",
     "bg-indigo-400",
@@ -63,15 +56,11 @@ function Beat({
     }
   );
 
-  const handleVelocityChange = (velocity) => {
-    onVelocityChange(index, velocity);
-  };
-
   return (
     <div>
-      <div onClick={toggle} className={classes} />
+      <div onClick={handleToggle} className={classes} />
       {showVelocity && isOn ? (
-        <Velocity velocity={velocity} onVelocityChange={handleVelocityChange} />
+        <Velocity velocity={velocity} onVelocityChange={onVelocityChange} />
       ) : null}
     </div>
   );

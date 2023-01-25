@@ -1,25 +1,30 @@
+import { useSelector, useDispatch } from "react-redux";
+import { playBeat, pauseBeat, stopBeat } from "../store/slices/controllerSlice";
 import { IoPlayOutline } from "react-icons/io5";
 import { IoPauseOutline } from "react-icons/io5";
 import { IoStopOutline } from "react-icons/io5";
+import Button from "./Button";
 
-function Controls({ onPlay, onPause, onStop, playing }) {
-  const btnClasses =
-    "border-black border-2 text-black font-bold py-1 px-3 rounded text-sm";
+function Controls() {
+  const playing = useSelector((state) => state.controller.playing);
+  const dispatch = useDispatch();
+
+  const renderedPlayPauseButton = playing ? (
+    <Button onClick={() => dispatch(pauseBeat())}>
+      <IoPauseOutline size={24} />
+    </Button>
+  ) : (
+    <Button onClick={() => dispatch(playBeat())}>
+      <IoPlayOutline size={24} />
+    </Button>
+  );
 
   return (
     <div className="flex flex-row space-x-1">
-      {!playing ? (
-        <button className={btnClasses} onClick={onPlay}>
-          <IoPlayOutline size={24} />
-        </button>
-      ) : (
-        <button className={btnClasses} onClick={onPause}>
-          <IoPauseOutline size={24} />
-        </button>
-      )}
-      <button className={btnClasses} onClick={onStop}>
+      {renderedPlayPauseButton}
+      <Button onClick={() => dispatch(stopBeat())}>
         <IoStopOutline size={24} />
-      </button>
+      </Button>
     </div>
   );
 }

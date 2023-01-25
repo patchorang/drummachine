@@ -1,25 +1,50 @@
 import Beat from "./Beat";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleBeat, setVelocity } from "../store/slices/beatSlice";
 import { useState } from "react";
 var classnames = require("classnames");
 
-function Channel({ track, activeBeat, label, toggleBeat, onVelocityChange }) {
+function Channel({ channelData, channelIndex, label }) {
+  const activeBeatIndex = useSelector(
+    (state) => state.controller.activeBeatIndex
+  );
+  const currentBeat = useSelector((state) => state.controller.currentBeat);
+  const dispatch = useDispatch();
+
   const [showVelocity, setShowVelocity] = useState(false);
 
   const handleToggle = (index) => {
-    toggleBeat(index);
+    dispatch(
+      toggleBeat({
+        beatIndex: currentBeat,
+        channelIndex: channelIndex,
+        noteIndex: index,
+      })
+    );
   };
 
-  const renderedChannel = track.map((c, i) => (
+  const handleChangeVelocity = (index, velocity) => {
+    dispatch(
+      setVelocity({
+        beatIndex: currentBeat,
+        channelIndex: channelIndex,
+        noteIndex: index,
+        velocity: velocity,
+      })
+    );
+  };
+
+  const renderedChannel = channelData.map((c, i) => (
     <Beat
-      key={track.toString() + i}
+      key={channelData.toString() + i}
       index={i}
       isOn={c.on}
       velocity={c.velocity}
-      isActive={i === activeBeat}
+      isActive={i === activeBeatIndex}
       highlight={(i / 8.0) % 1 >= 0.5}
       handleToggle={() => handleToggle(i)}
+      onVelocityChange={(v) => handleChangeVelocity(i, v)}
       showVelocity={showVelocity}
-      onVelocityChange={onVelocityChange}
     />
   ));
   const classes = classnames("flex mb-1 group");

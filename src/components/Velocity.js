@@ -1,8 +1,4 @@
 function Velocity({ velocity, onVelocityChange }) {
-  const changeVelocity = (e) => {
-    onVelocityChange(e.target.value);
-  };
-
   return (
     <input
       className="input-range vertical-slider h-16 w-8"
@@ -10,7 +6,7 @@ function Velocity({ velocity, onVelocityChange }) {
       type="range"
       step="0.05"
       value={velocity}
-      onChange={changeVelocity}
+      onChange={(e) => onVelocityChange(e.target.value)}
       min="0"
       max="1"
     ></input>

@@ -1,23 +1,29 @@
-function BeatSelector({ currentSelection, setSelection }) {
-  const btnClasses =
-    "border-black border-2 text-black font-bold py-1 px-3 rounded text-sm";
+import { useSelector, useDispatch } from "react-redux";
+import { setSelectedBeat } from "../store/slices/controllerSlice";
+import Button from "./Button";
+
+function BeatSelector() {
+  const selectedBeat = useSelector((state) => state.controller.currentBeat);
+  const numBeats = useSelector((state) => state.beat.length);
+  const dispatch = useDispatch();
+
+  const handleDecrement = () => {
+    if (selectedBeat - 1 >= 0) {
+      dispatch(setSelectedBeat(selectedBeat - 1));
+    }
+  };
+
+  const handleIncrement = () => {
+    if (selectedBeat + 1 < numBeats) {
+      dispatch(setSelectedBeat(selectedBeat + 1));
+    }
+  };
 
   return (
     <div className="flex space-x-1 items-center">
-      <div className="font-bold text-sm">Track {currentSelection}</div>
-
-      <button
-        className={btnClasses}
-        onClick={() => setSelection(currentSelection - 1)}
-      >
-        Prev
-      </button>
-      <button
-        className={btnClasses}
-        onClick={() => setSelection(currentSelection + 1)}
-      >
-        Next
-      </button>
+      <div className="font-bold text-sm">Track {selectedBeat}</div>
+      <Button onClick={handleDecrement}>Prev</Button>
+      <Button onClick={handleIncrement}>Next</Button>
     </div>
   );
 }
