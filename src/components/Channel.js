@@ -1,7 +1,6 @@
 import Beat from "./Beat";
-import { IoClose, IoVolumeMediumOutline } from "react-icons/io5";
+import { IoClose, IoOptions } from "react-icons/io5";
 import sampleLibrary from "../utils/samplesLibrary";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   toggleBeat,
@@ -9,6 +8,10 @@ import {
   setInstrument,
   removeChannel,
 } from "../store/slices/beatSlice";
+import {
+  setActiveVelocityChannel,
+  hideVelocity,
+} from "../store/slices/controllerSlice";
 var classnames = require("classnames");
 
 function Channel({ instrument, channelData, channelIndex }) {
@@ -16,9 +19,20 @@ function Channel({ instrument, channelData, channelIndex }) {
     (state) => state.controller.activeBeatIndex
   );
   const currentBeat = useSelector((state) => state.controller.currentBeat);
+  const activeVelocityChannel = useSelector(
+    (state) => state.controller.activeVelocityChannel
+  );
   const dispatch = useDispatch();
 
-  const [showVelocity, setShowVelocity] = useState(false);
+  // const [showVelocity, setShowVelocity] = useState(false);
+
+  const handleVelocityToggle = () => {
+    if (activeVelocityChannel === channelIndex) {
+      dispatch(hideVelocity());
+    } else {
+      dispatch(setActiveVelocityChannel(channelIndex));
+    }
+  };
 
   const handleToggle = (index) => {
     dispatch(
@@ -58,6 +72,7 @@ function Channel({ instrument, channelData, channelIndex }) {
         channelIndex: channelIndex,
       })
     );
+    dispatch(hideVelocity());
   };
 
   const renderedChannel = channelData.map((c, i) => (
@@ -70,7 +85,7 @@ function Channel({ instrument, channelData, channelIndex }) {
       highlight={(i / 8.0) % 1 >= 0.5}
       handleToggle={() => handleToggle(i)}
       onVelocityChange={(v) => handleChangeVelocity(i, v)}
-      showVelocity={showVelocity}
+      showVelocity={activeVelocityChannel === channelIndex}
     />
   ));
   const classes = classnames("flex mb-1 group");
@@ -99,25 +114,39 @@ function Channel({ instrument, channelData, channelIndex }) {
       <div className="flex flex-row items-start pr-1 space-x-1 mr-4">
         {renderedInstrumentselector}
 
-        <button
-          className="border-black border-2 text-black font-bold rounded text-sm w-8  h-8 "
-          onClick={() => setShowVelocity(!showVelocity)}
-        >
-          <div>
-            {showVelocity ? (
-              "hide"
-            ) : (
-              <IoVolumeMediumOutline className="mx-auto" size={16} />
-            )}
-          </div>
-        </button>
+        <div>
+          {activeVelocityChannel === channelIndex ? (
+            <button
+              className="border-black border-2 text-black font-bold rounded text-sm w-8 h-8 bg-black"
+              onClick={handleVelocityToggle}
+            >
+              <IoOptions
+                color="white"
+                style={{ transform: "rotate(90deg)" }}
+                className="mx-auto"
+                size={20}
+              />
+            </button>
+          ) : (
+            <button
+              className="border-black border-2 text-black font-bold rounded text-sm w-8 h-8"
+              onClick={handleVelocityToggle}
+            >
+              <IoOptions
+                style={{ transform: "rotate(90deg)" }}
+                className="mx-auto"
+                size={20}
+              />
+            </button>
+          )}
+        </div>
       </div>
       {renderedChannel}
       <button
         onClick={handleRemoveChannel}
         className="border-black border-2 text-black font-bold rounded w-8 h-8 ml-4"
       >
-        <IoClose className="mx-auto" size={16} />
+        <IoClose className="mx-auto" size={20} />
       </button>
     </div>
   );

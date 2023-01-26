@@ -3,6 +3,7 @@ const initialState = {
   playing: false,
   activeBeatIndex: 0,
   currentBeat: 0,
+  activeVelocityChannel: -1,
 };
 export const controllerSlice = createSlice({
   name: "controller",
@@ -24,6 +25,12 @@ export const controllerSlice = createSlice({
     setActiveBeatIndex: (state, action) => {
       state.activeBeatIndex = action.payload;
     },
+    setActiveVelocityChannel: (state, action) => {
+      state.activeVelocityChannel = action.payload;
+    },
+    hideVelocity: (state, action) => {
+      state.activeVelocityChannel = -1;
+    },
   },
 });
 export const {
@@ -32,5 +39,7 @@ export const {
   pauseBeat,
   stopBeat,
   setActiveBeatIndex,
+  setActiveVelocityChannel,
+  hideVelocity,
 } = controllerSlice.actions;
 export default controllerSlice.reducer;

@@ -51,6 +51,7 @@ function Track() {
       beatData.beat.map((b) => {
         return new Howl({
           src: [sampleLibrary[b.instrument].sample],
+          // html5: true,
         });
       })
     );
