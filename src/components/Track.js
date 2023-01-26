@@ -12,6 +12,7 @@ import sampleLibrary from "../utils/samplesLibrary";
 import Channel from "./Channel";
 import Controls from "./Controls";
 import BeatSelector from "./BeatSelector";
+import Button from "./Button";
 
 function Track() {
   const selectedBeat = useSelector((state) => state.controller.currentBeat);
@@ -88,12 +89,13 @@ function Track() {
           <BeatSelector />
         </div>
         <div>{renderedChannels}</div>
-        <button
-          className="border-black border-2 text-black font-bold rounded w-8 h-8"
+        <Button
           onClick={() => dispatch(addChannel({ beatIndex: selectedBeat }))}
+          square
+          className="ml-4"
         >
-          <IoAddSharp className="mx-auto" size={16} />
-        </button>
+          <IoAddSharp size={16} />
+        </Button>
       </div>
     </div>
   );

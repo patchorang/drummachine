@@ -1,5 +1,6 @@
 import Beat from "./Beat";
 import { IoClose, IoOptions } from "react-icons/io5";
+import Button from "./Button";
 import sampleLibrary from "../utils/samplesLibrary";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -23,8 +24,6 @@ function Channel({ instrument, channelData, channelIndex }) {
     (state) => state.controller.activeVelocityChannel
   );
   const dispatch = useDispatch();
-
-  // const [showVelocity, setShowVelocity] = useState(false);
 
   const handleVelocityToggle = () => {
     if (activeVelocityChannel === channelIndex) {
@@ -88,7 +87,10 @@ function Channel({ instrument, channelData, channelIndex }) {
       showVelocity={activeVelocityChannel === channelIndex}
     />
   ));
-  const classes = classnames("flex mb-1 group");
+
+  const classes = classnames("flex mb-1 group", {
+    "mb-4": activeVelocityChannel === channelIndex,
+  });
 
   const instrumentSelectorOptions = sampleLibrary.map((instrument, index) => {
     return (
@@ -103,7 +105,7 @@ function Channel({ instrument, channelData, channelIndex }) {
       name="instrument"
       value={instrument}
       onChange={(e) => handleChangeInstrument(e.target.value)}
-      className="border-black border-2 text-black font-bold h-8 rounded text-sm w-24"
+      className="border-black border-2 text-black font-bold h-8 rounded text-sm w-24 cursor-pointer"
     >
       {instrumentSelectorOptions}
     </select>
@@ -117,7 +119,7 @@ function Channel({ instrument, channelData, channelIndex }) {
         <div>
           {activeVelocityChannel === channelIndex ? (
             <button
-              className="border-black border-2 text-black font-bold rounded text-sm w-8 h-8 bg-black"
+              className="border-black border-2 text-black font-bold rounded text-sm w-8 h-8 bg-black hover:bg-gray-800"
               onClick={handleVelocityToggle}
             >
               <IoOptions
@@ -129,7 +131,7 @@ function Channel({ instrument, channelData, channelIndex }) {
             </button>
           ) : (
             <button
-              className="border-black border-2 text-black font-bold rounded text-sm w-8 h-8"
+              className="border-black border-2 text-black font-bold rounded text-sm w-8 h-8 hover:bg-gray-200"
               onClick={handleVelocityToggle}
             >
               <IoOptions
@@ -142,12 +144,11 @@ function Channel({ instrument, channelData, channelIndex }) {
         </div>
       </div>
       {renderedChannel}
-      <button
-        onClick={handleRemoveChannel}
-        className="border-black border-2 text-black font-bold rounded w-8 h-8 ml-4"
-      >
-        <IoClose className="mx-auto" size={20} />
-      </button>
+      <div className="ml-4">
+        <Button onClick={handleRemoveChannel} square>
+          <IoClose size={20} />
+        </Button>
+      </div>
     </div>
   );
 }

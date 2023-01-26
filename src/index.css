@@ -2,16 +2,32 @@
 @tailwind components;
 .vertical-slider{
   -webkit-appearance: slider-vertical;
-  background: transparent;
   cursor: pointer;
-  width: 130em;
+  opacity: 0;
+  z-index: 3;
+  width: 1em;
 }
 
-.vertical-slider::-webkit-slider-runnable-track {
-  background: #053a5f;
-  height: 2rem;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  height: 4em;
+  width: 1em;
 }
 
+.control {
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: .5em;
+}
+
+.control-wrapper {
+  position: absolute;
+  height: 4em;
+  width: 1em;
+}
 
 @tailwind utilities;
 

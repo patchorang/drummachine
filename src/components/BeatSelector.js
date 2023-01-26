@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from "react-redux";
 import { setSelectedBeat } from "../store/slices/controllerSlice";
+import { IoChevronForward, IoChevronBack } from "react-icons/io5";
 import Button from "./Button";
 
 function BeatSelector() {
@@ -21,9 +22,14 @@ function BeatSelector() {
 
   return (
     <div className="flex space-x-1 items-center">
-      <div className="font-bold text-sm">Track {selectedBeat + 1}</div>
-      <Button onClick={handleDecrement}>Prev</Button>
-      <Button onClick={handleIncrement}>Next</Button>
+      <Button onClick={handleDecrement} square>
+        <IoChevronBack size={20} />
+      </Button>
+      <div className="font-bold text-sm">Pattern {selectedBeat + 1}</div>
+
+      <Button onClick={handleIncrement} square>
+        <IoChevronForward size={20} />
+      </Button>
     </div>
   );
 }
