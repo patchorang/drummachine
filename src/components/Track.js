@@ -78,15 +78,14 @@ function Track() {
       renderedChannels
     ) : (
       <div className="text-sm font-bold bg-gray-100 p-8 rounded mb-2 px-28">
-        Well how are you going to make a beat without any instruments? Add one
-        and make some beats.
+        Well how are you going to make a beat without any instruments?
       </div>
     );
 
   if (isMobile) {
     renderedContent = (
       <div className="text-sm font-bold bg-gray-100 p-8 rounded mb-2">
-        Sorry, there are some technical issues with playing lots of sounds
+        Sorry, there are some ~technical issues~ with playing lots of sounds
         really quickly on a phone that I haven't explored yet.
       </div>
     );
@@ -117,9 +116,10 @@ function Track() {
           <IoAddSharp size={16} />
         </Button>
       </div>
-      <button onClick={() => console.log(JSON.stringify(beatData))}>
+      {/* For dev */}
+      {/* <button onClick={() => console.log(JSON.stringify(beatData))}>
         Print
-      </button>
+      </button> */}
     </div>
   );
 }
