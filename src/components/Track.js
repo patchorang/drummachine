@@ -33,7 +33,7 @@ function Track() {
   const [instruments, setInstruments] = useState(null);
 
   const handleStep = () => {
-    if (playing) {
+    if (playing && bpm && bpm > 0) {
       const beat = (activeBeatIndex + 1) % numBeats;
       channels.forEach((channel, channelIndex) => {
         if (channel.data[beat].on) {
